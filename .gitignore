@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+.coverage
+htmlcov/
+.env
+.env.*
+workflows/
+private/
+reports/
+autohub-output.*
+execution-plan*.json
