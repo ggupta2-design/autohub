@@ -1,0 +1,54 @@
+{
+  "description": "Validate and summarize a fictional local dataset",
+  "enabled": true,
+  "name": "Example data review",
+  "schema_version": 1,
+  "steps": [
+    {
+      "action": "collect",
+      "continue_on_error": false,
+      "depends_on": [],
+      "id": "collect_inputs",
+      "retries": 1,
+      "timeout_seconds": 60,
+      "title": "Collect local inputs"
+    },
+    {
+      "action": "validate",
+      "continue_on_error": false,
+      "depends_on": [
+        "collect_inputs"
+      ],
+      "id": "validate_inputs",
+      "retries": 0,
+      "timeout_seconds": 30,
+      "title": "Validate input structure"
+    },
+    {
+      "action": "transform",
+      "continue_on_error": false,
+      "depends_on": [
+        "validate_inputs"
+      ],
+      "id": "build_summary",
+      "retries": 1,
+      "timeout_seconds": 120,
+      "title": "Build aggregate summary"
+    },
+    {
+      "action": "export",
+      "continue_on_error": false,
+      "depends_on": [
+        "build_summary"
+      ],
+      "id": "export_summary",
+      "retries": 0,
+      "timeout_seconds": 30,
+      "title": "Export summary"
+    }
+  ],
+  "trigger": {
+    "interval_minutes": null,
+    "type": "manual"
+  }
+}
