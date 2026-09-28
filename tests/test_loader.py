@@ -31,7 +31,8 @@ def test_workflow_from_dict_loads_strict_manifest():
     workflow = workflow_from_dict(payload())
     assert workflow.name == "Daily review"
     assert workflow.trigger.type is TriggerType.INTERVAL
-    assert workflow.steps[0].maximum_attempts if False else workflow.steps[0].retries == 1
+    assert workflow.steps[0].retries == 1
+    assert workflow.steps[0].depends_on == ()
 
 
 @pytest.mark.parametrize(
@@ -49,6 +50,14 @@ def test_loader_rejects_unknown_versions_fields_and_shapes(mutate):
     mutate(value)
     with pytest.raises(AutoHubError):
         workflow_from_dict(value)
+
+
+def test_load_workflow_reads_valid_local_file(tmp_path):
+    source = tmp_path / "workflow.json"
+    source.write_text(json.dumps(payload()), encoding="utf-8")
+    workflow = load_workflow(source)
+    assert workflow.name == "Daily review"
+    assert workflow.steps[0].id == "collect"
 
 
 def test_load_workflow_rejects_missing_invalid_and_oversized_files(tmp_path):
