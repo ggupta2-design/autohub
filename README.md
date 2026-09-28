@@ -19,6 +19,26 @@ AutoHub is being built as part of an eight-week automation-project challenge.
 Public examples contain fictional workflows only. Real operational workflows and
 private paths must remain in private local files.
 
+## Quick start
+
+```bash
+python -m pip install -e .
+
+autohub validate examples/workflow.json
+autohub plan examples/workflow.json
+autohub plan examples/workflow.json \
+  --json --redact-names \
+  --output ~/private/reports/execution-plan.json
+```
+
+Validation and planning never execute workflow actions. An enabled plan returns
+status 0, a valid disabled plan returns 1, and invalid input or an unsafe output
+request returns 2. Exports cannot overwrite existing files.
+
+See the [usage guide](docs/usage.md), [planning model](docs/planning-model.md),
+and [privacy and safety guide](docs/privacy-and-safety.md).
+
 ## Status
 
-AutoHub 0.1.0 is under active development.
+AutoHub 0.1.0 provides strict workflow validation and deterministic,
+dependency-aware dry-run planning for Python 3.10 through 3.13.
