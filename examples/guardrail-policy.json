@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "name": "Conservative local planning policy",
+  "require_enabled": true,
+  "maximum_steps": 20,
+  "maximum_waves": 10,
+  "maximum_attempts": 30,
+  "maximum_timeout_seconds": 7200,
+  "allow_continue_on_error": false,
+  "allowed_actions": [
+    "collect",
+    "validate",
+    "transform",
+    "export"
+  ]
+}
