@@ -8,10 +8,13 @@ import sys
 from pathlib import Path
 from typing import Sequence
 
+from .audit import audit_workflow
+from .audit_report import format_preflight_audit
 from .loader import load_workflow
 from .models import AutoHubError
 from .output import write_output
 from .planner import build_execution_plan
+from .policy import load_policy
 from .report import format_execution_plan
 
 
@@ -38,6 +41,23 @@ def build_parser() -> argparse.ArgumentParser:
     plan.add_argument("--json", action="store_true", dest="as_json")
     plan.add_argument("--redact-names", action="store_true")
     plan.add_argument("--output", type=Path)
+
+    validate_policy = commands.add_parser(
+        "validate-policy",
+        help="validate a local guardrail policy",
+    )
+    validate_policy.add_argument("policy", type=Path)
+    validate_policy.add_argument("--json", action="store_true", dest="as_json")
+
+    audit = commands.add_parser(
+        "audit",
+        help="evaluate a workflow against a policy without executing it",
+    )
+    audit.add_argument("workflow", type=Path)
+    audit.add_argument("--policy", type=Path, required=True)
+    audit.add_argument("--json", action="store_true", dest="as_json")
+    audit.add_argument("--redact-names", action="store_true")
+    audit.add_argument("--output", type=Path)
     return parser
 
 
@@ -49,9 +69,40 @@ def _emit(content: str, output: Path | None) -> None:
         print(f"Wrote {destination.name}")
 
 
+def _validate_policy(args: argparse.Namespace) -> int:
+    policy = load_policy(args.policy)
+    payload = {
+        "valid": True,
+        "require_enabled": policy.require_enabled,
+        "maximum_steps": policy.maximum_steps,
+        "maximum_waves": policy.maximum_waves,
+        "maximum_attempts": policy.maximum_attempts,
+        "maximum_timeout_seconds": policy.maximum_timeout_seconds,
+        "allow_continue_on_error": policy.allow_continue_on_error,
+        "allowed_actions": [action.value for action in policy.allowed_actions],
+    }
+    if args.as_json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(
+            "Policy is valid\n"
+            f"Require enabled: {'yes' if policy.require_enabled else 'no'}\n"
+            f"Maximum steps: {policy.maximum_steps}\n"
+            f"Maximum waves: {policy.maximum_waves}\n"
+            f"Maximum attempts: {policy.maximum_attempts}\n"
+            f"Maximum timeout budget: {policy.maximum_timeout_seconds} seconds\n"
+            f"Continue on error allowed: "
+            f"{'yes' if policy.allow_continue_on_error else 'no'}"
+        )
+    return 0
+
+
 def run(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.command == "validate-policy":
+            return _validate_policy(args)
+
         workflow = load_workflow(args.workflow)
         plan = build_execution_plan(workflow)
         if args.command == "validate":
@@ -73,6 +124,17 @@ def run(argv: Sequence[str] | None = None) -> int:
                     f"Waves: {plan.wave_count}"
                 )
             return 0
+
+        if args.command == "audit":
+            policy = load_policy(args.policy)
+            audit = audit_workflow(workflow, policy, plan=plan)
+            content = format_preflight_audit(
+                audit,
+                as_json=args.as_json,
+                redact_names=args.redact_names,
+            )
+            _emit(content, args.output)
+            return 0 if audit.ready else 1
 
         content = format_execution_plan(
             plan,
