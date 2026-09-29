@@ -1,23 +1,26 @@
 # AutoHub
 
 AutoHub is a local-first command-line tool for validating automation workflow
-manifests and compiling them into deterministic, dependency-aware execution
-plans.
+manifests, compiling deterministic dependency plans, and evaluating those plans
+against reusable guardrail policies.
 
-The first milestone focuses on safe planning fundamentals:
+AutoHub 0.2 provides:
 
-- strict, versioned JSON workflow definitions;
+- strict, versioned workflow and policy JSON schemas;
 - validated step identifiers, action types, timeouts, and retry limits;
 - missing-dependency, self-dependency, and cycle detection;
 - deterministic topological execution waves;
 - bounded worst-case attempt and timeout summaries;
-- readable and JSON planning reports;
+- policy limits for steps, waves, attempts, timeouts, enabled state, allowed
+  actions, and continue-on-error behavior;
+- stable, aggregate preflight finding codes;
+- name-redacted Markdown and JSON audit reports;
 - private, non-overwriting report exports;
 - no workflow execution, network requests, credentials, or hosted accounts.
 
 AutoHub is being built as part of an eight-week automation-project challenge.
-Public examples contain fictional workflows only. Real operational workflows and
-private paths must remain in private local files.
+Public examples contain fictional workflows and policies only. Real operational
+files and private paths must remain in private local storage.
 
 ## Quick start
 
@@ -26,19 +29,27 @@ python -m pip install -e .
 
 autohub validate examples/workflow.json
 autohub plan examples/workflow.json
-autohub plan examples/workflow.json \
+
+autohub validate-policy examples/guardrail-policy.json
+autohub audit examples/workflow.json \
+  --policy examples/guardrail-policy.json
+
+autohub audit examples/workflow.json \
+  --policy examples/guardrail-policy.json \
   --json --redact-names \
-  --output ~/private/reports/execution-plan.json
+  --output ~/private/reports/preflight-audit.json
 ```
 
-Validation and planning never execute workflow actions. An enabled plan returns
-status 0, a valid disabled plan returns 1, and invalid input or an unsafe output
-request returns 2. Exports cannot overwrite existing files.
+Validation, planning, and auditing never execute workflow actions. A ready audit
+returns status 0, a policy-blocked audit returns 1, and invalid input or an
+unsafe output request returns 2. Exports cannot overwrite existing files.
 
-See the [usage guide](docs/usage.md), [planning model](docs/planning-model.md),
-and [privacy and safety guide](docs/privacy-and-safety.md).
+See the [usage guide](docs/usage.md),
+[guardrail policy guide](docs/guardrail-policies.md),
+[planning model](docs/planning-model.md), and
+[privacy and safety guide](docs/privacy-and-safety.md).
 
 ## Status
 
-AutoHub 0.1.0 provides strict workflow validation and deterministic,
-dependency-aware dry-run planning for Python 3.10 through 3.13.
+AutoHub 0.2.0 provides strict workflow validation, deterministic dependency
+planning, and policy-driven preflight audits for Python 3.10 through 3.13.
