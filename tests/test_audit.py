@@ -61,7 +61,7 @@ def test_ready_workflow_has_no_findings():
     assert audit.step_count == 3
     assert audit.wave_count == 3
     assert audit.maximum_attempts == 4
-    assert audit.maximum_timeout_seconds == 100
+    assert audit.maximum_timeout_seconds == 90
 
 
 def test_audit_emits_stable_aggregate_findings():
@@ -71,7 +71,7 @@ def test_audit_emits_stable_aggregate_findings():
             maximum_steps=2,
             maximum_waves=2,
             maximum_attempts=3,
-            maximum_timeout_seconds=99,
+            maximum_timeout_seconds=89,
             allowed_actions=("validate",),
         ),
     )
