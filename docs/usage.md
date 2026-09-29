@@ -31,28 +31,59 @@ the same wave in identifier order; dependent steps appear only after every
 prerequisite wave. Reports include conservative maximum attempt and timeout
 budgets. No workflow actions are executed.
 
+## Validate a guardrail policy
+
+```bash
+autohub validate-policy examples/guardrail-policy.json
+autohub validate-policy examples/guardrail-policy.json --json
+```
+
+Policy validation is local and does not load or execute a workflow. It checks
+the strict schema, bounded budgets, boolean safeguards, and unique allowed
+action set.
+
+## Run a read-only preflight audit
+
+```bash
+autohub audit examples/workflow.json \
+  --policy examples/guardrail-policy.json
+
+autohub audit examples/workflow.json \
+  --policy examples/guardrail-policy.json \
+  --json --redact-names
+```
+
+The audit validates both files, builds the deterministic plan, and evaluates its
+aggregate properties against the selected policy. Status 0 means ready, status
+1 means blocked by one or more policy findings, and status 2 means an input or
+output request was invalid. A blocked decision never changes the workflow.
+
 ## Redact operational names
 
 ```bash
 autohub plan examples/workflow.json --json --redact-names
+autohub audit examples/workflow.json \
+  --policy examples/guardrail-policy.json \
+  --json --redact-names
 ```
 
-This replaces the workflow name with `[redacted]` and step identifiers with
-stable `step-001` labels. It does not hide graph shape, action categories,
-timeouts, retries, or trigger metadata.
+Planning redaction replaces the workflow name and step identifiers. Audit
+redaction replaces the workflow and policy names; audit reports never include
+step identifiers or titles. Aggregate graph shape, budgets, decisions, and
+finding codes remain visible.
 
 ## Export without overwriting
 
 ```bash
-autohub plan ~/private/workflow.json \
+autohub audit ~/private/workflow.json \
+  --policy ~/private/guardrail-policy.json \
   --json --redact-names \
-  --output ~/private/reports/execution-plan.json
+  --output ~/private/reports/preflight-audit.json
 ```
 
 Exports use private permissions where supported and cannot replace an existing
-file. Status 0 means validation succeeded or an enabled workflow was planned.
-Status 1 means a valid but disabled workflow was planned. Status 2 means the
-manifest, dependency graph, or output request was invalid.
+file.
 
-Read [privacy-and-safety.md](privacy-and-safety.md) before using real
-operational workflow information.
+Read [guardrail-policies.md](guardrail-policies.md) and
+[privacy-and-safety.md](privacy-and-safety.md) before using real operational
+workflow information.
