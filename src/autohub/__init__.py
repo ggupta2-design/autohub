@@ -2,6 +2,8 @@
 
 from .audit import AuditFinding, PreflightAudit, audit_workflow
 from .audit_report import format_preflight_audit, preflight_audit_to_dict
+from .compare import WorkflowComparison, compare_workflows
+from .compare_report import format_workflow_comparison, workflow_comparison_to_dict
 from .loader import MAX_WORKFLOW_BYTES, load_workflow, workflow_from_dict
 from .models import (
     ActionType,
@@ -21,7 +23,7 @@ from .policy import (
 )
 from .report import execution_plan_to_dict, format_execution_plan
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "ActionType",
@@ -36,17 +38,21 @@ __all__ = [
     "Trigger",
     "TriggerType",
     "Workflow",
+    "WorkflowComparison",
     "WorkflowStep",
     "__version__",
     "audit_workflow",
     "build_execution_plan",
+    "compare_workflows",
     "execution_plan_to_dict",
     "format_execution_plan",
     "format_preflight_audit",
+    "format_workflow_comparison",
     "load_policy",
     "load_workflow",
     "policy_from_dict",
     "preflight_audit_to_dict",
+    "workflow_comparison_to_dict",
     "workflow_from_dict",
     "write_output",
 ]
