@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autohub"
-version = "0.2.0"
-description = "Local-first dependency planning and policy-driven preflight audits"
+version = "0.3.0"
+description = "Local-first workflow planning, policy audits, and version comparisons"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
