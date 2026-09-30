@@ -117,3 +117,31 @@ def test_comparison_does_not_modify_inputs():
     before = (baseline, current)
     compare_workflows(baseline, current)
     assert (baseline, current) == before
+
+
+def test_dependency_order_is_not_a_semantic_change():
+    baseline = workflow(
+        steps=(
+            WorkflowStep("first", "First", "collect"),
+            WorkflowStep("second", "Second", "validate"),
+            WorkflowStep(
+                "final",
+                "Final",
+                "export",
+                depends_on=("first", "second"),
+            ),
+        )
+    )
+    current = workflow(
+        steps=(
+            WorkflowStep("first", "First", "collect"),
+            WorkflowStep("second", "Second", "validate"),
+            WorkflowStep(
+                "final",
+                "Final",
+                "export",
+                depends_on=("second", "first"),
+            ),
+        )
+    )
+    assert compare_workflows(baseline, current).changed is False
