@@ -10,6 +10,8 @@ from typing import Sequence
 
 from .audit import audit_workflow
 from .audit_report import format_preflight_audit
+from .compare import compare_workflows
+from .compare_report import format_workflow_comparison
 from .loader import load_workflow
 from .models import AutoHubError
 from .output import write_output
@@ -58,6 +60,16 @@ def build_parser() -> argparse.ArgumentParser:
     audit.add_argument("--json", action="store_true", dest="as_json")
     audit.add_argument("--redact-names", action="store_true")
     audit.add_argument("--output", type=Path)
+
+    compare = commands.add_parser(
+        "compare",
+        help="compare two workflow versions without executing either",
+    )
+    compare.add_argument("baseline", type=Path)
+    compare.add_argument("current", type=Path)
+    compare.add_argument("--json", action="store_true", dest="as_json")
+    compare.add_argument("--redact-names", action="store_true")
+    compare.add_argument("--output", type=Path)
     return parser
 
 
@@ -102,6 +114,18 @@ def run(argv: Sequence[str] | None = None) -> int:
     try:
         if args.command == "validate-policy":
             return _validate_policy(args)
+
+        if args.command == "compare":
+            baseline = load_workflow(args.baseline)
+            current = load_workflow(args.current)
+            comparison = compare_workflows(baseline, current)
+            content = format_workflow_comparison(
+                comparison,
+                as_json=args.as_json,
+                redact_names=args.redact_names,
+            )
+            _emit(content, args.output)
+            return 1 if comparison.changed else 0
 
         workflow = load_workflow(args.workflow)
         plan = build_execution_plan(workflow)
