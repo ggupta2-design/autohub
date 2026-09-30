@@ -51,12 +51,27 @@ autohub audit examples/workflow.json \
 autohub audit examples/workflow.json \
   --policy examples/guardrail-policy.json \
   --json --redact-names
+autohub compare ~/private/workflow-v1.json ~/private/workflow-v2.json \
+  --json --redact-names
 ```
 
 The audit validates both files, builds the deterministic plan, and evaluates its
 aggregate properties against the selected policy. Status 0 means ready, status
 1 means blocked by one or more policy findings, and status 2 means an input or
 output request was invalid. A blocked decision never changes the workflow.
+
+## Compare workflow versions
+
+```bash
+autohub compare ~/private/workflow-v1.json ~/private/workflow-v2.json
+autohub compare ~/private/workflow-v1.json ~/private/workflow-v2.json \
+  --json --redact-names
+```
+
+Comparison validates both manifests and reports aggregate metadata, structural,
+downstream-impact, and plan-budget changes. Status 0 means no semantic change,
+status 1 means a valid change was found, and status 2 means an input or output
+request was invalid. Neither source file is modified.
 
 ## Redact operational names
 
@@ -68,9 +83,10 @@ autohub audit examples/workflow.json \
 ```
 
 Planning redaction replaces the workflow name and step identifiers. Audit
-redaction replaces the workflow and policy names; audit reports never include
-step identifiers or titles. Aggregate graph shape, budgets, decisions, and
-finding codes remain visible.
+redaction replaces the workflow and policy names. Comparison redaction replaces
+both workflow names. Audit and comparison reports never include step
+identifiers or titles. Aggregate graph shape, budgets, decisions, finding
+codes, and comparison deltas remain visible.
 
 ## Export without overwriting
 
@@ -84,6 +100,7 @@ autohub audit ~/private/workflow.json \
 Exports use private permissions where supported and cannot replace an existing
 file.
 
-Read [guardrail-policies.md](guardrail-policies.md) and
+Read [guardrail-policies.md](guardrail-policies.md),
+[workflow-comparisons.md](workflow-comparisons.md), and
 [privacy-and-safety.md](privacy-and-safety.md) before using real operational
 workflow information.
