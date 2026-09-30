@@ -49,11 +49,16 @@ class WorkflowComparison:
 
 
 def _changed_fields(baseline: WorkflowStep, current: WorkflowStep) -> tuple[str, ...]:
-    return tuple(
-        field
-        for field in _STEP_FIELDS
-        if getattr(baseline, field) != getattr(current, field)
-    )
+    changed = []
+    for field in _STEP_FIELDS:
+        before = getattr(baseline, field)
+        after = getattr(current, field)
+        if field == "depends_on":
+            before = frozenset(before)
+            after = frozenset(after)
+        if before != after:
+            changed.append(field)
+    return tuple(changed)
 
 
 def _downstream(workflow: Workflow, seeds: set[str]) -> set[str]:
