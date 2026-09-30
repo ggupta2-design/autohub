@@ -2,6 +2,21 @@
 
 All notable changes to AutoHub are documented here.
 
+## 0.3.0 — 2026-09-30
+
+AutoHub 0.3 adds privacy-safe, read-only workflow version comparisons.
+
+- Compare two strictly validated workflow manifests locally.
+- Aggregate added, removed, modified, unchanged, and impacted step counts.
+- Identify changed metadata and step-field categories without reporting values.
+- Calculate signed step, wave, attempt, and timeout-budget deltas.
+- Expand downstream impact through both dependency graphs.
+- Ignore non-semantic step and dependency-list ordering.
+- Omit step identifiers, titles, descriptions, and before-or-after values.
+- Support name-redacted text and JSON reports.
+- Export comparison reports privately without overwriting existing files.
+- Provide automation-friendly unchanged, changed, and invalid statuses.
+
 ## 0.2.0 — 2026-09-29
 
 AutoHub 0.2 adds policy-driven, read-only workflow preflight audits.
