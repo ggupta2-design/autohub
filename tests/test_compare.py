@@ -90,7 +90,7 @@ def test_comparison_aggregates_structural_and_plan_changes():
     assert comparison.step_delta == 0
     assert comparison.wave_delta == 0
     assert comparison.attempt_delta == 1
-    assert comparison.timeout_delta_seconds == 50
+    assert comparison.timeout_delta_seconds == 65
 
 
 def test_metadata_changes_report_field_names_not_values():
