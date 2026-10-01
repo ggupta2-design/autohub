@@ -73,6 +73,25 @@ downstream-impact, and plan-budget changes. Status 0 means no semantic change,
 status 1 means a valid change was found, and status 2 means an input or output
 request was invalid. Neither source file is modified.
 
+## Audit a workflow folder
+
+```bash
+autohub audit-folder ~/private/workflows \\
+  --policy ~/private/guardrail-policy.json \\
+  --json --redact-names
+
+autohub audit-folder ~/private/workflows \\
+  --policy ~/private/guardrail-policy.json \\
+  --recursive --max-files 250
+```
+
+Folder audits discover JSON manifests deterministically, isolate malformed
+files, and aggregate ready, blocked, invalid, and finding counts. Recursion is
+opt-in, symbolic links are not followed, and the explicit file limit is checked
+before auditing. Status 0 means the portfolio is ready, status 1 means at least
+one workflow is blocked or invalid, and status 2 means the command could not run
+safely. Reports omit filenames, paths, workflow names, and per-file details.
+
 ## Redact operational names
 
 ```bash
@@ -83,8 +102,9 @@ autohub audit examples/workflow.json \
 ```
 
 Planning redaction replaces the workflow name and step identifiers. Audit
-redaction replaces the workflow and policy names. Comparison redaction replaces
-both workflow names. Audit and comparison reports never include step
+redaction replaces the workflow and policy names. Portfolio redaction replaces
+the policy name; portfolio reports never include workflow names. Comparison
+redaction replaces both workflow names. Audit and comparison reports never include step
 identifiers or titles. Aggregate graph shape, budgets, decisions, finding
 codes, and comparison deltas remain visible.
 
@@ -101,6 +121,7 @@ Exports use private permissions where supported and cannot replace an existing
 file.
 
 Read [guardrail-policies.md](guardrail-policies.md),
-[workflow-comparisons.md](workflow-comparisons.md), and
+[workflow-comparisons.md](workflow-comparisons.md),
+[portfolio-audits.md](portfolio-audits.md), and
 [privacy-and-safety.md](privacy-and-safety.md) before using real operational
 workflow information.
