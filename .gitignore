@@ -15,3 +15,6 @@ private/
 reports/
 autohub-output.*
 execution-plan*.json
+portfolio-audit*.json
+portfolio-audit*.txt
+*.portfolio.json
