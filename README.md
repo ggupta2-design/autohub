@@ -2,9 +2,9 @@
 
 AutoHub is a local-first command-line tool for validating automation workflows,
 compiling deterministic dependency plans, enforcing reusable guardrail policies,
-and comparing workflow versions before approval.
+comparing workflow versions, and auditing bounded workflow portfolios before approval.
 
-AutoHub 0.3 provides:
+AutoHub 0.4 provides:
 
 - strict, versioned workflow and policy JSON schemas;
 - validated identifiers, action types, dependencies, timeouts, and retries;
@@ -14,6 +14,9 @@ AutoHub 0.3 provides:
 - read-only comparisons of validated workflow versions;
 - aggregate added, removed, modified, unchanged, and downstream-impact counts;
 - signed plan-budget deltas that omit step-level values;
+- bounded shallow or recursive workflow folder discovery;
+- portfolio audits with invalid-file isolation and aggregate policy findings;
+- path-free reports that omit workflow and file identities;
 - privacy-aware text and JSON reports;
 - private, non-overwriting report exports;
 - no workflow execution, network requests, credentials, or hosted accounts.
@@ -39,19 +42,21 @@ autohub compare ~/private/workflow-v1.json ~/private/workflow-v2.json \
   --output ~/private/reports/workflow-comparison.json
 ```
 
-Validation, planning, auditing, and comparison never execute workflow actions.
+Validation, planning, auditing, comparison, and portfolio review never execute workflow actions.
 An unchanged comparison returns status 0, a valid changed comparison returns 1,
 and invalid input or an unsafe output request returns 2. Exports cannot
 overwrite existing files.
 
 See the [usage guide](docs/usage.md),
 [workflow comparison guide](docs/workflow-comparisons.md),
+[portfolio audit guide](docs/portfolio-audits.md),
 [guardrail policy guide](docs/guardrail-policies.md),
 [planning model](docs/planning-model.md), and
 [privacy and safety guide](docs/privacy-and-safety.md).
 
 ## Status
 
-AutoHub 0.3.0 provides strict validation, deterministic dependency planning,
-policy-driven preflight audits, and privacy-safe workflow version comparisons
+AutoHub 0.4.0 provides strict validation, deterministic dependency planning,
+policy-driven preflight audits, privacy-safe workflow version comparisons, and
+bounded folder-level portfolio audits
 for Python 3.10 through 3.13.
