@@ -2,6 +2,20 @@
 
 All notable changes to AutoHub are documented here.
 
+## 0.4.0 — 2026-10-01
+
+AutoHub 0.4 adds bounded, privacy-safe workflow portfolio audits.
+
+- Discover JSON workflow manifests deterministically in a local folder.
+- Keep recursion opt-in and never follow symbolic links.
+- Enforce an explicit file limit before auditing begins.
+- Isolate malformed workflows so one invalid file cannot hide other results.
+- Aggregate ready, blocked, invalid, and stable policy-finding counts.
+- Omit workflow names, filenames, paths, and per-file details from reports.
+- Support redacted text and JSON reports with protected exports.
+- Provide automation-friendly ready, review-required, and invalid statuses.
+- Preserve every source file and execute no workflow actions.
+
 ## 0.3.0 — 2026-09-30
 
 AutoHub 0.3 adds privacy-safe, read-only workflow version comparisons.
