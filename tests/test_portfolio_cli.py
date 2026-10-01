@@ -95,7 +95,7 @@ def test_recursive_folder_audit_and_file_limit(tmp_path, capsys):
         json.dumps(workflow_payload()), encoding="utf-8"
     )
     assert run(command) == 2
-    assert "more than 1 workflow files" in capsys.readouterr().err
+    assert "more than the allowed 1 JSON files" in capsys.readouterr().err
 
 
 def test_redacted_folder_export_is_private_and_non_overwriting(tmp_path, capsys):
