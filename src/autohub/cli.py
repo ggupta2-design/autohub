@@ -17,6 +17,8 @@ from .models import AutoHubError
 from .output import write_output
 from .planner import build_execution_plan
 from .policy import load_policy
+from .portfolio import audit_workflow_folder
+from .portfolio_report import format_portfolio_audit
 from .report import format_execution_plan
 
 
@@ -60,6 +62,18 @@ def build_parser() -> argparse.ArgumentParser:
     audit.add_argument("--json", action="store_true", dest="as_json")
     audit.add_argument("--redact-names", action="store_true")
     audit.add_argument("--output", type=Path)
+
+    folder = commands.add_parser(
+        "audit-folder",
+        help="audit a bounded workflow folder without executing",
+    )
+    folder.add_argument("root", type=Path)
+    folder.add_argument("--policy", type=Path, required=True)
+    folder.add_argument("--recursive", action="store_true")
+    folder.add_argument("--max-files", type=int, default=100)
+    folder.add_argument("--json", action="store_true", dest="as_json")
+    folder.add_argument("--redact-names", action="store_true")
+    folder.add_argument("--output", type=Path)
 
     compare = commands.add_parser(
         "compare",
@@ -114,6 +128,22 @@ def run(argv: Sequence[str] | None = None) -> int:
     try:
         if args.command == "validate-policy":
             return _validate_policy(args)
+
+        if args.command == "audit-folder":
+            policy = load_policy(args.policy)
+            audit = audit_workflow_folder(
+                args.root,
+                policy,
+                recursive=args.recursive,
+                max_files=args.max_files,
+            )
+            content = format_portfolio_audit(
+                audit,
+                as_json=args.as_json,
+                redact_names=args.redact_names,
+            )
+            _emit(content, args.output)
+            return 1 if audit.review_required else 0
 
         if args.command == "compare":
             baseline = load_workflow(args.baseline)
