@@ -1,4 +1,4 @@
-"""Local-first dependency planning and policy-driven preflight audits."""
+"""Local-first workflow planning, auditing, comparison, and review."""
 
 from .audit import AuditFinding, PreflightAudit, audit_workflow
 from .audit_report import format_preflight_audit, preflight_audit_to_dict
@@ -29,13 +29,16 @@ from .policy import (
     policy_from_dict,
 )
 from .report import execution_plan_to_dict, format_execution_plan
+from .review import ChangeReview, review_workflow_change
+from .review_report import change_review_to_dict, format_change_review
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 
 __all__ = [
     "ActionType",
     "AuditFinding",
     "AutoHubError",
+    "ChangeReview",
     "ExecutionPlan",
     "GuardrailPolicy",
     "MAX_POLICY_BYTES",
@@ -53,9 +56,11 @@ __all__ = [
     "audit_workflow",
     "audit_workflow_folder",
     "build_execution_plan",
+    "change_review_to_dict",
     "compare_workflows",
     "discover_workflow_files",
     "execution_plan_to_dict",
+    "format_change_review",
     "format_execution_plan",
     "format_portfolio_audit",
     "format_preflight_audit",
@@ -65,6 +70,7 @@ __all__ = [
     "policy_from_dict",
     "portfolio_audit_to_dict",
     "preflight_audit_to_dict",
+    "review_workflow_change",
     "workflow_comparison_to_dict",
     "workflow_from_dict",
     "write_output",
