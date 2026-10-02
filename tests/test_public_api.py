@@ -5,7 +5,7 @@ from autohub.cli import build_parser
 
 
 def test_planning_and_audit_workflows_are_available_from_public_api():
-    assert autohub.__version__ == "0.4.0"
+    assert autohub.__version__ == "0.5.0"
     assert callable(autohub.load_workflow)
     assert callable(autohub.workflow_from_dict)
     assert callable(autohub.build_execution_plan)
@@ -17,6 +17,9 @@ def test_planning_and_audit_workflows_are_available_from_public_api():
     assert callable(autohub.preflight_audit_to_dict)
     assert callable(autohub.format_preflight_audit)
     assert callable(autohub.compare_workflows)
+    assert callable(autohub.review_workflow_change)
+    assert callable(autohub.change_review_to_dict)
+    assert callable(autohub.format_change_review)
     assert callable(autohub.discover_workflow_files)
     assert callable(autohub.audit_workflow_folder)
     assert callable(autohub.portfolio_audit_to_dict)
@@ -34,4 +37,4 @@ def test_cli_reports_synced_release_version(capsys):
         build_parser().parse_args(["--version"])
 
     assert raised.value.code == 0
-    assert capsys.readouterr().out == "autohub 0.4.0\n"
+    assert capsys.readouterr().out == "autohub 0.5.0\n"
