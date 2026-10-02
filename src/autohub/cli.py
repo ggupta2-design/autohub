@@ -20,6 +20,8 @@ from .policy import load_policy
 from .portfolio import audit_workflow_folder
 from .portfolio_report import format_portfolio_audit
 from .report import format_execution_plan
+from .review import review_workflow_change
+from .review_report import format_change_review
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -74,6 +76,17 @@ def build_parser() -> argparse.ArgumentParser:
     folder.add_argument("--json", action="store_true", dest="as_json")
     folder.add_argument("--redact-names", action="store_true")
     folder.add_argument("--output", type=Path)
+
+    review = commands.add_parser(
+        "review-change",
+        help="compare and audit a proposed workflow change without executing",
+    )
+    review.add_argument("baseline", type=Path)
+    review.add_argument("current", type=Path)
+    review.add_argument("--policy", type=Path, required=True)
+    review.add_argument("--json", action="store_true", dest="as_json")
+    review.add_argument("--redact-names", action="store_true")
+    review.add_argument("--output", type=Path)
 
     compare = commands.add_parser(
         "compare",
@@ -144,6 +157,19 @@ def run(argv: Sequence[str] | None = None) -> int:
             )
             _emit(content, args.output)
             return 1 if audit.review_required else 0
+
+        if args.command == "review-change":
+            baseline = load_workflow(args.baseline)
+            current = load_workflow(args.current)
+            policy = load_policy(args.policy)
+            review = review_workflow_change(baseline, current, policy)
+            content = format_change_review(
+                review,
+                as_json=args.as_json,
+                redact_names=args.redact_names,
+            )
+            _emit(content, args.output)
+            return 0 if review.decision == "unchanged" else 1
 
         if args.command == "compare":
             baseline = load_workflow(args.baseline)
