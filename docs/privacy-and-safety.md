@@ -1,7 +1,7 @@
 # Privacy and execution safety
 
-AutoHub 0.4 is a local planning, preflight-audit, workflow-comparison, and
-portfolio-audit tool. It validates workflow manifests and guardrail policies,
+AutoHub 0.5 is a local planning, preflight-audit, workflow-comparison,
+portfolio-audit, and change-review tool. It validates workflow manifests and guardrail policies,
 builds execution plans, evaluates aggregate policy properties, compares
 validated versions, and reviews bounded folders. It does not execute steps,
 read referenced business data, run commands, schedule jobs, send notifications,
@@ -15,11 +15,13 @@ thresholds can reveal internal operations. Keep real manifests, policies, plans,
 audits, and exports outside this public repository. Public examples use
 fictional names only.
 
-Use `--redact-names` when a plan, audit, comparison, or portfolio report must be
+Use `--redact-names` when a plan, audit, comparison, portfolio report, or
+change review must be
 reviewed outside its private working directory. Portfolio reports never include
 workflow names, filenames, paths, step identifiers, titles, descriptions, or
-per-file results. Redaction additionally replaces the policy name. Aggregate
-counts and finding codes remain visible and may still be sensitive.
+per-file results. Redaction additionally replaces the policy name. Change reviews omit step identities and values and can replace both workflow
+names and the policy name. Aggregate counts, changed field labels, plan deltas,
+and finding codes remain visible and may still be sensitive.
 
 Do not place passwords, tokens, API keys, personal data, customer records, or
 secret values in manifests or policies. Their strict schemas intentionally have
@@ -60,6 +62,19 @@ invalid, so keep policies and unrelated JSON outside the audited root.
 A ready portfolio means every discovered workflow was valid and fit the
 selected local policy. An empty folder is a valid empty audit. Neither result
 proves that undiscovered, excluded, linked, or non-JSON files are safe.
+
+## Change review boundary
+
+A policy-ready proposed version is not automatically safe or approved. A
+semantic change always produces `review_required`, even when every guardrail
+passes. AutoHub cannot verify authorization, business intent, data handling,
+external dependencies, regulatory obligations, or runtime behavior. A person
+or separately authorized system must make the approval decision.
+
+Status 0 is reserved for unchanged, policy-ready input. Changed and blocked
+reviews both return status 1 so an automation gate cannot confuse policy
+compliance with approval. Reviews never edit, execute, schedule, or publish a
+workflow.
 
 ## Decision and comparison boundaries
 
