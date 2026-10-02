@@ -73,6 +73,21 @@ downstream-impact, and plan-budget changes. Status 0 means no semantic change,
 status 1 means a valid change was found, and status 2 means an input or output
 request was invalid. Neither source file is modified.
 
+## Review a proposed workflow change
+
+```bash
+autohub review-change \\
+  ~/private/workflow-v1.json ~/private/workflow-v2.json \\
+  --policy ~/private/guardrail-policy.json \\
+  --json --redact-names
+```
+
+Change review combines semantic comparison with a policy audit of the proposed
+version. Status 0 means unchanged and policy-ready. Status 1 means a valid
+change requires human review or the proposed version is policy-blocked. Status
+2 means an input or output request was invalid. Passing policy never grants
+automatic approval and neither workflow is modified or executed.
+
 ## Audit a workflow folder
 
 ```bash
@@ -103,7 +118,8 @@ autohub audit examples/workflow.json \
 
 Planning redaction replaces the workflow name and step identifiers. Audit
 redaction replaces the workflow and policy names. Portfolio redaction replaces
-the policy name; portfolio reports never include workflow names. Comparison
+the policy name; portfolio reports never include workflow names. Change-review
+redaction replaces both workflow names and the policy name. Comparison
 redaction replaces both workflow names. Audit and comparison reports never include step
 identifiers or titles. Aggregate graph shape, budgets, decisions, finding
 codes, and comparison deltas remain visible.
@@ -122,6 +138,7 @@ file.
 
 Read [guardrail-policies.md](guardrail-policies.md),
 [workflow-comparisons.md](workflow-comparisons.md),
+[change-reviews.md](change-reviews.md),
 [portfolio-audits.md](portfolio-audits.md), and
 [privacy-and-safety.md](privacy-and-safety.md) before using real operational
 workflow information.
