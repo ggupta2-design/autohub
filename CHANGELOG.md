@@ -2,6 +2,21 @@
 
 All notable changes to AutoHub are documented here.
 
+## 0.5.0 — 2026-10-02
+
+AutoHub 0.5 adds policy-gated, read-only workflow change reviews.
+
+- Validate baseline, proposed, and guardrail policy inputs locally.
+- Combine semantic workflow comparison with a policy audit of the proposal.
+- Distinguish unchanged, review-required, and policy-blocked outcomes.
+- Require human review for every semantic change, even when policy-ready.
+- Aggregate changed fields, impacted steps, plan deltas, and policy findings.
+- Omit step identifiers, titles, descriptions, dependencies, and individual values.
+- Support name-redacted text and JSON review evidence.
+- Export reviews privately without overwriting existing files.
+- Reserve success status for unchanged, policy-ready workflows.
+- Preserve both workflow versions and execute no actions.
+
 ## 0.4.0 — 2026-10-01
 
 AutoHub 0.4 adds bounded, privacy-safe workflow portfolio audits.
