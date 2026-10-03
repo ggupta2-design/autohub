@@ -21,3 +21,6 @@ portfolio-audit*.txt
 change-review*.json
 change-review*.txt
 *.review.json
+topology-analysis*.json
+topology-analysis*.txt
+*.topology.json
