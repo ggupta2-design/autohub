@@ -22,6 +22,8 @@ from .portfolio_report import format_portfolio_audit
 from .report import format_execution_plan
 from .review import review_workflow_change
 from .review_report import format_change_review
+from .topology import analyze_workflow_topology
+from .topology_report import format_topology_analysis
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -47,6 +49,15 @@ def build_parser() -> argparse.ArgumentParser:
     plan.add_argument("--json", action="store_true", dest="as_json")
     plan.add_argument("--redact-names", action="store_true")
     plan.add_argument("--output", type=Path)
+
+    topology = commands.add_parser(
+        "analyze-topology",
+        help="analyze workflow dependency topology without executing actions",
+    )
+    topology.add_argument("workflow", type=Path)
+    topology.add_argument("--json", action="store_true", dest="as_json")
+    topology.add_argument("--redact-names", action="store_true")
+    topology.add_argument("--output", type=Path)
 
     validate_policy = commands.add_parser(
         "validate-policy",
@@ -203,6 +214,16 @@ def run(argv: Sequence[str] | None = None) -> int:
                     f"Steps: {plan.step_count}\n"
                     f"Waves: {plan.wave_count}"
                 )
+            return 0
+
+        if args.command == "analyze-topology":
+            analysis = analyze_workflow_topology(workflow)
+            content = format_topology_analysis(
+                analysis,
+                as_json=args.as_json,
+                redact_names=args.redact_names,
+            )
+            _emit(content, args.output)
             return 0
 
         if args.command == "audit":
