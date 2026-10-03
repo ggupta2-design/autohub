@@ -2,6 +2,21 @@
 
 All notable changes to AutoHub are documented here.
 
+## 0.6.0 — 2026-10-03
+
+AutoHub 0.6 adds privacy-safe workflow dependency topology analysis.
+
+- Measure workflow steps and dependency edges without execution.
+- Report root and leaf counts plus deterministic dependency depth.
+- Quantify parallel waves and maximum parallel width.
+- Calculate maximum direct fan-in and fan-out.
+- Count upstream steps and unique transitive downstream exposure.
+- Deduplicate shared descendants in diamond-shaped graphs.
+- Keep results independent of manifest step order.
+- Omit step identifiers, titles, descriptions, and per-step values.
+- Support name-redacted text and JSON reports.
+- Export topology reports privately without overwriting existing files.
+
 ## 0.5.0 — 2026-10-02
 
 AutoHub 0.5 adds policy-gated, read-only workflow change reviews.
