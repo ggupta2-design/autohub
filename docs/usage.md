@@ -31,6 +31,21 @@ the same wave in identifier order; dependent steps appear only after every
 prerequisite wave. Reports include conservative maximum attempt and timeout
 budgets. No workflow actions are executed.
 
+## Analyze dependency topology
+
+```bash
+autohub analyze-topology ~/private/workflow.json
+autohub analyze-topology ~/private/workflow.json \\
+  --json --redact-names \\
+  --output ~/private/reports/topology.json
+```
+
+Topology analysis reports aggregate depth, width, roots, leaves, dependency
+edges, direct fan-in and fan-out, and transitive downstream exposure. It stores
+no step identities or per-step values and does not execute the workflow. Status
+0 means analysis completed; status 2 means an input or output request was
+invalid.
+
 ## Validate a guardrail policy
 
 ```bash
@@ -111,12 +126,15 @@ safely. Reports omit filenames, paths, workflow names, and per-file details.
 
 ```bash
 autohub plan examples/workflow.json --json --redact-names
+autohub analyze-topology examples/workflow.json --json --redact-names
 autohub audit examples/workflow.json \
   --policy examples/guardrail-policy.json \
   --json --redact-names
 ```
 
-Planning redaction replaces the workflow name and step identifiers. Audit
+Planning redaction replaces the workflow name and step identifiers. Topology
+redaction replaces the workflow name; topology reports never contain step
+identifiers. Audit
 redaction replaces the workflow and policy names. Portfolio redaction replaces
 the policy name; portfolio reports never include workflow names. Change-review
 redaction replaces both workflow names and the policy name. Comparison
