@@ -31,8 +31,10 @@ from .policy import (
 from .report import execution_plan_to_dict, format_execution_plan
 from .review import ChangeReview, review_workflow_change
 from .review_report import change_review_to_dict, format_change_review
+from .topology import TopologyAnalysis, analyze_workflow_topology
+from .topology_report import format_topology_analysis, topology_analysis_to_dict
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
 __all__ = [
     "ActionType",
@@ -47,6 +49,7 @@ __all__ = [
     "PlannedStep",
     "PortfolioAudit",
     "PreflightAudit",
+    "TopologyAnalysis",
     "Trigger",
     "TriggerType",
     "Workflow",
@@ -55,6 +58,7 @@ __all__ = [
     "__version__",
     "audit_workflow",
     "audit_workflow_folder",
+    "analyze_workflow_topology",
     "build_execution_plan",
     "change_review_to_dict",
     "compare_workflows",
@@ -64,6 +68,7 @@ __all__ = [
     "format_execution_plan",
     "format_portfolio_audit",
     "format_preflight_audit",
+    "format_topology_analysis",
     "format_workflow_comparison",
     "load_policy",
     "load_workflow",
@@ -71,6 +76,7 @@ __all__ = [
     "portfolio_audit_to_dict",
     "preflight_audit_to_dict",
     "review_workflow_change",
+    "topology_analysis_to_dict",
     "workflow_comparison_to_dict",
     "workflow_from_dict",
     "write_output",
