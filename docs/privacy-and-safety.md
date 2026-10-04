@@ -1,7 +1,7 @@
 # Privacy and execution safety
 
-AutoHub 0.6 is a local planning, preflight-audit, workflow-comparison,
-portfolio-audit, change-review, and dependency-topology analysis tool. It validates workflow manifests and guardrail policies,
+AutoHub 0.7 is a local planning, preflight-audit, workflow-comparison,
+portfolio-audit, change-review, dependency-topology analysis, and workflow-integrity audit tool. It validates workflow manifests and guardrail policies,
 builds execution plans, evaluates aggregate policy properties, compares
 validated versions, and reviews bounded folders. It does not execute steps,
 read referenced business data, run commands, schedule jobs, send notifications,
@@ -16,7 +16,7 @@ audits, and exports outside this public repository. Public examples use
 fictional names only.
 
 Use `--redact-names` when a plan, audit, comparison, portfolio report, or
-change review, or topology report must be
+change review, topology report, or integrity audit must be
 reviewed outside its private working directory. Portfolio reports never include
 workflow names, filenames, paths, step identifiers, titles, descriptions, or
 per-file results. Redaction additionally replaces the policy name. Change reviews omit step identities and values and can replace both workflow
@@ -75,6 +75,19 @@ Structural measurements describe a validated dependency graph. They do not
 predict runtime duration, failure likelihood, performance, business impact, or
 whether a step is safe. AutoHub does not assign risk scores or make approval
 decisions from topology alone.
+
+## Integrity audit boundary
+
+Integrity audits report normalized duplicate-title counts, redundant dependency
+edge counts, and weakly disconnected component counts. They omit all step
+identifiers, titles, descriptions, dependency values, action labels, timing
+values, and per-step findings. Name redaction also replaces the workflow name.
+
+These findings are maintainability prompts, not correctness or security
+judgments. Duplicate titles, transitive edges, and independent branches can be
+intentional. A clean audit does not establish authorization, runtime safety,
+business correctness, or approval. AutoHub never changes a workflow in response
+to a finding.
 
 ## Change review boundary
 
