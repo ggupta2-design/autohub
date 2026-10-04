@@ -12,6 +12,8 @@ from .audit import audit_workflow
 from .audit_report import format_preflight_audit
 from .compare import compare_workflows
 from .compare_report import format_workflow_comparison
+from .integrity import audit_workflow_integrity
+from .integrity_report import format_integrity_audit
 from .loader import load_workflow
 from .models import AutoHubError
 from .output import write_output
@@ -58,6 +60,15 @@ def build_parser() -> argparse.ArgumentParser:
     topology.add_argument("--json", action="store_true", dest="as_json")
     topology.add_argument("--redact-names", action="store_true")
     topology.add_argument("--output", type=Path)
+
+    integrity = commands.add_parser(
+        "audit-integrity",
+        help="audit workflow structure without executing actions",
+    )
+    integrity.add_argument("workflow", type=Path)
+    integrity.add_argument("--json", action="store_true", dest="as_json")
+    integrity.add_argument("--redact-names", action="store_true")
+    integrity.add_argument("--output", type=Path)
 
     validate_policy = commands.add_parser(
         "validate-policy",
@@ -215,6 +226,16 @@ def run(argv: Sequence[str] | None = None) -> int:
                     f"Waves: {plan.wave_count}"
                 )
             return 0
+
+        if args.command == "audit-integrity":
+            integrity_audit = audit_workflow_integrity(workflow)
+            content = format_integrity_audit(
+                integrity_audit,
+                as_json=args.as_json,
+                redact_names=args.redact_names,
+            )
+            _emit(content, args.output)
+            return 0 if integrity_audit.clean else 1
 
         if args.command == "analyze-topology":
             analysis = analyze_workflow_topology(workflow)
