@@ -4,7 +4,7 @@ AutoHub is a local-first command-line tool for validating automation workflows,
 compiling deterministic dependency plans, enforcing reusable guardrail policies,
 comparing versions, auditing bounded portfolios, reviewing changes, and analyzing dependency topology before approval.
 
-AutoHub 0.6 provides:
+AutoHub 0.7 provides:
 
 - strict, versioned workflow and policy JSON schemas;
 - validated identifiers, action types, dependencies, timeouts, and retries;
@@ -21,6 +21,8 @@ AutoHub 0.6 provides:
 - conservative decisions that never automatically approve changed workflows;
 - aggregate dependency depth, width, fan-in, fan-out, and downstream exposure;
 - topology reports that retain no step identities or per-step values;
+- read-only integrity audits for duplicate titles, redundant dependencies, and disconnected components;
+- aggregate integrity reports with stable codes and no step-level disclosure;
 - privacy-aware text and JSON reports;
 - private, non-overwriting report exports;
 - no workflow execution, network requests, credentials, or hosted accounts.
@@ -37,6 +39,7 @@ python -m pip install -e .
 autohub validate examples/workflow.json
 autohub plan examples/workflow.json
 autohub analyze-topology examples/workflow.json --json --redact-names
+autohub audit-integrity examples/workflow.json --json --redact-names
 
 autohub validate-policy examples/guardrail-policy.json
 autohub audit examples/workflow.json \
@@ -47,7 +50,7 @@ autohub compare ~/private/workflow-v1.json ~/private/workflow-v2.json \
   --output ~/private/reports/workflow-comparison.json
 ```
 
-Validation, planning, topology analysis, auditing, comparison, portfolio review, and change review never execute workflow actions.
+Validation, planning, topology analysis, integrity auditing, policy auditing, comparison, portfolio review, and change review never execute workflow actions.
 An unchanged comparison returns status 0, a valid changed comparison returns 1,
 and invalid input or an unsafe output request returns 2. Exports cannot
 overwrite existing files.
@@ -58,12 +61,13 @@ See the [usage guide](docs/usage.md),
 [portfolio audit guide](docs/portfolio-audits.md),
 [guardrail policy guide](docs/guardrail-policies.md),
 [planning model](docs/planning-model.md),
-[topology analysis guide](docs/topology-analysis.md), and
+[topology analysis guide](docs/topology-analysis.md),
+[integrity audit guide](docs/integrity-audits.md), and
 [privacy and safety guide](docs/privacy-and-safety.md).
 
 ## Status
 
-AutoHub 0.6.0 provides strict validation, deterministic dependency planning,
-privacy-safe topology analysis, policy-driven audits, version comparisons,
+AutoHub 0.7.0 provides strict validation, deterministic dependency planning,
+privacy-safe topology and integrity analysis, policy-driven audits, version comparisons,
 bounded portfolio audits, and conservative change reviews
 for Python 3.10 through 3.13.
