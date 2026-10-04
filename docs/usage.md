@@ -46,6 +46,21 @@ no step identities or per-step values and does not execute the workflow. Status
 0 means analysis completed; status 2 means an input or output request was
 invalid.
 
+## Audit workflow integrity
+
+```bash
+autohub audit-integrity ~/private/workflow.json
+autohub audit-integrity ~/private/workflow.json \
+  --json --redact-names \
+  --output ~/private/reports/integrity-audit.json
+```
+
+Integrity audits detect normalized duplicate titles, redundant dependency edges,
+and disconnected graph components. Reports contain only aggregate codes and
+counts, never step identities or values. Status 0 means clean, status 1 means
+review required, and status 2 means the command could not run safely. Audits
+never execute or modify a workflow.
+
 ## Validate a guardrail policy
 
 ```bash
@@ -127,6 +142,7 @@ safely. Reports omit filenames, paths, workflow names, and per-file details.
 ```bash
 autohub plan examples/workflow.json --json --redact-names
 autohub analyze-topology examples/workflow.json --json --redact-names
+autohub audit-integrity examples/workflow.json --json --redact-names
 autohub audit examples/workflow.json \
   --policy examples/guardrail-policy.json \
   --json --redact-names
@@ -134,7 +150,7 @@ autohub audit examples/workflow.json \
 
 Planning redaction replaces the workflow name and step identifiers. Topology
 redaction replaces the workflow name; topology reports never contain step
-identifiers. Audit
+identifiers. Integrity redaction replaces the workflow name; integrity reports never contain step identities or values. Audit
 redaction replaces the workflow and policy names. Portfolio redaction replaces
 the policy name; portfolio reports never include workflow names. Change-review
 redaction replaces both workflow names and the policy name. Comparison
@@ -157,6 +173,7 @@ file.
 Read [guardrail-policies.md](guardrail-policies.md),
 [workflow-comparisons.md](workflow-comparisons.md),
 [change-reviews.md](change-reviews.md),
-[portfolio-audits.md](portfolio-audits.md), and
+[portfolio-audits.md](portfolio-audits.md),
+[integrity-audits.md](integrity-audits.md), and
 [privacy-and-safety.md](privacy-and-safety.md) before using real operational
 workflow information.
