@@ -33,7 +33,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="autohub",
         description="Validate workflows and build safe execution plans",
     )
-    parser.add_argument("--version", action="version", version="autohub 0.6.0")
+    parser.add_argument("--version", action="version", version="autohub 0.7.0")
     commands = parser.add_subparsers(dest="command", required=True)
 
     validate = commands.add_parser(
