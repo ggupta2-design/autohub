@@ -2,6 +2,21 @@
 
 All notable changes to AutoHub are documented here.
 
+## 0.7.0 — 2026-10-04
+
+AutoHub 0.7 adds read-only workflow integrity audits.
+
+- Detect normalized duplicate step titles without exposing their values.
+- Find direct dependency edges that duplicate an alternate dependency path.
+- Count disconnected weak graph components as explicit review signals.
+- Keep findings deterministic and independent of manifest step order.
+- Report stable aggregate finding codes and counts only.
+- Omit step identifiers, titles, descriptions, dependency values, and timings.
+- Support name-redacted text and JSON reports.
+- Export integrity reports privately without overwriting existing files.
+- Provide automation-friendly clean, review-required, and invalid statuses.
+- Preserve the source workflow and execute no actions.
+
 ## 0.6.0 — 2026-10-03
 
 AutoHub 0.6 adds privacy-safe workflow dependency topology analysis.
