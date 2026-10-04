@@ -4,6 +4,8 @@ from .audit import AuditFinding, PreflightAudit, audit_workflow
 from .audit_report import format_preflight_audit, preflight_audit_to_dict
 from .compare import WorkflowComparison, compare_workflows
 from .compare_report import format_workflow_comparison, workflow_comparison_to_dict
+from .integrity import WorkflowIntegrityAudit, audit_workflow_integrity
+from .integrity_report import format_integrity_audit, integrity_audit_to_dict
 from .loader import MAX_WORKFLOW_BYTES, load_workflow, workflow_from_dict
 from .models import (
     ActionType,
@@ -34,7 +36,7 @@ from .review_report import change_review_to_dict, format_change_review
 from .topology import TopologyAnalysis, analyze_workflow_topology
 from .topology_report import format_topology_analysis, topology_analysis_to_dict
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 
 __all__ = [
     "ActionType",
@@ -43,6 +45,7 @@ __all__ = [
     "ChangeReview",
     "ExecutionPlan",
     "GuardrailPolicy",
+    "WorkflowIntegrityAudit",
     "MAX_POLICY_BYTES",
     "MAX_PORTFOLIO_FILES",
     "MAX_WORKFLOW_BYTES",
@@ -57,6 +60,7 @@ __all__ = [
     "WorkflowStep",
     "__version__",
     "audit_workflow",
+    "audit_workflow_integrity",
     "audit_workflow_folder",
     "analyze_workflow_topology",
     "build_execution_plan",
@@ -66,10 +70,12 @@ __all__ = [
     "execution_plan_to_dict",
     "format_change_review",
     "format_execution_plan",
+    "format_integrity_audit",
     "format_portfolio_audit",
     "format_preflight_audit",
     "format_topology_analysis",
     "format_workflow_comparison",
+    "integrity_audit_to_dict",
     "load_policy",
     "load_workflow",
     "policy_from_dict",
