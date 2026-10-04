@@ -24,3 +24,6 @@ change-review*.txt
 topology-analysis*.json
 topology-analysis*.txt
 *.topology.json
+integrity-audit*.json
+integrity-audit*.txt
+*.integrity.json
